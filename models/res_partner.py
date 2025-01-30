@@ -5,10 +5,12 @@ class ResPartner(models.Model):
 
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
-        """Modifica la búsqueda de contactos en Odoo para que solo se filtre por el campo company_registry."""
+        """Aplica la restricción solo cuando la búsqueda proviene de una cotización u orden de venta."""
         args = args or []
-        
-        if name:
+        context_model = self.env.context.get('model')
+
+        # Solo aplicar la restricción en ventas (sale.order)
+        if context_model == 'sale.order' and name:
             args.append(('company_registry', 'ilike', name))
         
         return super(ResPartner, self).name_search(name, args, operator, limit)
