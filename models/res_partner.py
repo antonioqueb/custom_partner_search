@@ -1,3 +1,4 @@
+# models/res_partner.py
 from odoo import models, api
 
 class ResPartner(models.Model):
@@ -5,12 +6,11 @@ class ResPartner(models.Model):
 
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
-        """Aplica la restricción solo cuando la búsqueda proviene de una cotización u orden de venta."""
-        args = args or []
-        context_model = self.env.context.get('model')
-
-        # Solo aplicar la restricción en ventas (sale.order)
-        if context_model == 'sale.order' and name:
-            args.append(('company_registry', 'ilike', name))
-        
-        return super(ResPartner, self).name_search(name, args, operator, limit)
+        """Filtra por 'company_registry' solo si el contexto 'from_sale_order' está presente."""
+        if self.env.context.get('from_sale_order') and name:
+            args = args or []
+            args += [('company_registry', 'ilike', name)]
+            # Llama al método base con name='' para ignorar búsqueda por nombre
+            return super().name_search(name='', args=args, operator=operator, limit=limit)
+        else:
+            return super().name_search(name, args, operator, limit)

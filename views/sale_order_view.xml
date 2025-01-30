@@ -1,3 +1,4 @@
+<!-- views/sale_order_view.xml -->
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_order_form_inherit" model="ir.ui.view">
@@ -6,7 +7,8 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="domain">[['company_registry', '!=', False]]</attribute>
+                <attribute name="domain">[('company_registry', '!=', False)]</attribute>
+                <attribute name="context">{'from_sale_order': True}</attribute>
             </xpath>
         </field>
     </record>
