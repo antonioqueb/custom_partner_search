@@ -9,7 +9,7 @@ class ResPartner(models.Model):
         """Filtra por 'company_registry' solo si el contexto 'from_sale_order' está presente."""
         if self.env.context.get('from_sale_order') and name:
             args = args or []
-            args += [('company_registry', 'ilike', name)]
+            args += [('company_registry', '=', name)]
             # Llama al método base con name='' para ignorar búsqueda por nombre
             return super().name_search(name='', args=args, operator=operator, limit=limit)
         else:
