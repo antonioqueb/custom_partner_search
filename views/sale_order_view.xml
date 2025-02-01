@@ -3,15 +3,11 @@
     <record id="view_order_form_inherit_partner_domain" model="ir.ui.view">
         <field name="name">sale.order.form.inherit.partner.domain</field>
         <field name="model">sale.order</field>
-        <!-- Heredamos la vista estándar de pedidos de venta -->
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- Localizamos el campo partner_id del formulario de Ventas -->
             <xpath expr="//field[@name='partner_id']" position="attributes">
-                <!-- Limitamos la búsqueda a contactos que tengan company_registry definido -->
                 <attribute name="domain">[('company_registry', '!=', False)]</attribute>
-                <!-- El contexto from_sale_order será clave para el filtro en res_partner.py -->
-                <attribute name="context">{"from_sale_order": true}</attribute>
+                <attribute name="context">{'from_sale_order': True}</attribute>
             </xpath>
         </field>
     </record>
