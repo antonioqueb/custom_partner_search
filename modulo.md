@@ -39,17 +39,12 @@ class ResPartner(models.Model):
         'from_sale_order' está presente (es decir, cuando estamos en Ventas).
         En otros módulos, la búsqueda se realiza de forma nativa.
         """
-        # Solo filtra si estamos en contexto de Ventas Y el usuario teclea algo
         if self.env.context.get('from_sale_order') and name:
             args = args or []
-            # Búsqueda PARCIAL por company_registry
             args.append(('company_registry', 'ilike', name))
-            # Pasamos name='' para ignorar coincidencia por nombre y forzar la búsqueda anterior
             return super(ResPartner, self).name_search(name='', args=args, operator=operator, limit=limit)
         else:
-            # En cualquier otro módulo (Compras, Contabilidad, etc.), búsqueda nativa
-            return super(ResPartner, self).name_search(name, args, operator, limit)
-```
+            return super(ResPartner, self).name_search(name, args, operator, limit)```
 
 ## ./views/sale_order_view.xml
 ```xml
